@@ -12,7 +12,7 @@ test <- read.csv("test.csv", header = TRUE)
 
 # take entire test table and combine it with 418 strings of none and return it
 # as a new dataframe and assign it to test.survived
-test.survived <- data.frame(survived = rep("None", nrow(test)), test[,])
+test.Survived <- data.frame(Survived = rep("None", nrow(test)), test[,])
 
 # swap column 1 and 2 of train to match test.survived. DO NOT CHANGE THE COLUMN NAMEs
 for(i in 1:nrow(train)){
@@ -22,7 +22,26 @@ for(i in 1:nrow(train)){
 }
 
 # change column  names in train to match colmumn names in test.survived
-colnames(train) <- c("Survived","PassengerId","Pclass","Name","Sex","Age","SibSp","Parch","Ticket","Fare","Cabin","Embarked	","V13")												
+colnames(train) <- c("Survived","PassengerId","Pclass","Name","Sex","Age","SibSp","Parch","Ticket","Fare","Cabin","Embarked","V13")												
 
 # delete the V13 column of train 
 train$V13 = NULL
+
+# Check if names of the columns of the two data table are same
+identical(names(train[12]), names(test.Survived[12]))
+
+# combine test.Survived dataset and train data sets
+# data.combined = append test.Survived to train data
+data.combined <- rbind(train, test.Survived)
+
+# About R data types
+# compactly display the structure of an aribitary R object
+# describes the data type of data.combined
+str(data.combined)
+
+# Change pclass variale data type to factor from integer
+data.combined$Pclass <- as.factor(data.combined$Pclass)
+# change survived variable data type to factor from character
+data.combined$Survived <- as.factor(data.combined$Survived)
+
+
