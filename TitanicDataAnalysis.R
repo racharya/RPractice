@@ -44,4 +44,9 @@ data.combined$Pclass <- as.factor(data.combined$Pclass)
 # change survived variable data type to factor from character
 data.combined$Survived <- as.factor(data.combined$Survived)
 
-
+#====================================
+#
+# Exploratory Modeling
+#
+#====================================
+library(randomForest)
