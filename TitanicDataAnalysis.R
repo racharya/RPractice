@@ -50,3 +50,9 @@ data.combined$Survived <- as.factor(data.combined$Survived)
 #
 #====================================
 library(randomForest)
+
+# Train a Random Forest with the default parameters using pclass and title
+# grab first 891 data sets with only 2 column pclass and title
+rf.train.2 <- data.combined[1:891, c("pclass", "title")]
+# dedicated label variable
+rf.label <- as.factor(train$Survived)
