@@ -44,6 +44,36 @@ data.combined$Pclass <- as.factor(data.combined$Pclass)
 # change survived variable data type to factor from character
 data.combined$Survived <- as.factor(data.combined$Survived)
 
+# take  alook at gross survival rates
+table(data.combined$Survived)
+
+head(as.character(train$Name))
+
+length(unique(as.character(data.combined$Name)))
+
+# extracting title from name 
+extractTitle <- function(Name){
+  Name <- as.character(Name)
+  
+  if(length(grep("Miss.", Name)) > 0){
+    return("Miss.")
+  } else if(length(grep("Master.", Name)) > 0){
+    return("Master.")
+  } else if(length(grep("Mrs.", Name)) > 0){
+    return("Mrs.")
+  } else if(length(grep("Mr.", Name)) > 0){
+    return("Mr.")
+  } else {
+    return("Other")
+  }
+}
+
+titles <- NULL
+for(i in 1: nrow(data.combined)){
+  titles <- c(titles, extractTitle(data.combined[i,"Name"]))
+}
+data.combined$title <-as.factor(titles)
+
 #====================================
 #
 # Exploratory Modeling
@@ -53,6 +83,15 @@ library(randomForest)
 
 # Train a Random Forest with the default parameters using pclass and title
 # grab first 891 data sets with only 2 column pclass and title
-rf.train.2 <- data.combined[1:891, c("pclass", "title")]
-# dedicated label variable
+rf.train.1 <- data.combined[1:891, c("pclass", "title")]
+# dedicated label variable. data.combined has all the label including the train data which has
+# no label. to actually the model we need the training data sets version of the survived variable
 rf.label <- as.factor(train$Survived)
+
+# setting the seed is important ow we get slightly different result 
+set.seed(1234)
+
+# train an instance of a random forest
+rf.1 <- randomForest(x = rf.train.1, y=rf.label, importance = TRUE, ntree = 1000)
+rf.1
+varImpPlot(rf.1)
